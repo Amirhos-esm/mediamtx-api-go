@@ -2,6 +2,7 @@ package mediamtx
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -14,9 +15,11 @@ type mediamtx struct {
 	hookBaseUrl *url.URL
 	baseAddress string
 	mutex       sync.Mutex
+	authMutex   sync.Mutex
+	authCb      AuthenticationCallback
 	host        string
 	callbacks   map[HookType]HookCallback
-	server http.Server
+	server      http.Server
 }
 
 func CreateMtxApi(mtx_addr string, hookBaseUrl *url.URL) *mediamtx {
@@ -53,6 +56,28 @@ func (mtx *mediamtx) RunServer(host string) error {
 			}
 		})
 	}
+	mux.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
+
+		var authData AuthenticationData
+		if err := json.NewDecoder(r.Body).Decode(&authData); err != nil {
+			http.Error(w, "Invalid request body", http.StatusBadRequest)
+			return
+		}
+		defer r.Body.Close()
+
+		mtx.authMutex.Lock()
+		cb := mtx.authCb
+		mtx.authMutex.Unlock()
+
+		if cb != nil {
+			if cb(&authData) {
+				w.WriteHeader(http.StatusOK)
+				w.Write([]byte("Authorized"))
+			} else {
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			}
+		}
+	})
 
 	go func() {
 		for {

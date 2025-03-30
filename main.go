@@ -86,6 +86,11 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
+	api.AddAuthenticationCallback(func(authData *mtx.AuthenticationData) bool {
+		fmt.Println("Authentication Data:", authData)
+		return true
+	})
+
 	err = api.RunServer("localhost:10000")
 	if err != nil {
 		panic(err)
