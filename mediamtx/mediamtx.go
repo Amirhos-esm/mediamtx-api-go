@@ -5,14 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"sync"
 	"time"
 )
 
 type mediamtx struct {
 	hookQueue   chan hookQueueType
-	hookBaseUrl *url.URL
+	hookBaseUrl string
 	baseAddress string
 	mutex       sync.Mutex
 	authMutex   sync.Mutex
@@ -22,7 +21,7 @@ type mediamtx struct {
 	server      http.Server
 }
 
-func CreateMtxApi(mtx_addr string, hookBaseUrl *url.URL) *mediamtx {
+func CreateMtxApi(mtx_addr string, hookBaseUrl string) *mediamtx {
 	return &mediamtx{
 		hookBaseUrl: hookBaseUrl,
 		baseAddress: mtx_addr,

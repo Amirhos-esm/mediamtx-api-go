@@ -46,16 +46,13 @@ func (ht HookType) String() string {
 }
 
 func (ht HookType) Enable(vars string, restart bool, mtx *mediamtx) error {
-	if mtx.hookBaseUrl == nil {
-		return errors.New("hookBaseUrl is nil")
-	}
 
 	queries := ""
 	if len(vars) > 0 {
 		queries = "?"
 		queries += vars
 	}
-	url := "curl " + mtx.hookBaseUrl.String() + "/" + ht.String() + queries
+	url := "curl " + mtx.hookBaseUrl + "/" + ht.String() + queries
 
 	switch ht {
 	case HOOK_runOnConnect:
