@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	mtx "mtx-go/mediamtx"
+	mtx "github.com/Amirhos-esm/mediamtx-api-go/mediamtx"
 )
 
 func main() {
