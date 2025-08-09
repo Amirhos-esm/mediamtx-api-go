@@ -44,7 +44,7 @@ func (ap RecordingList) String() string {
 	return string(yamlData)
 }
 
-func (mtx *mediamtx) ListRecordings(page, itemsPerPage int) (*RecordingList, error) {
+func (mtx *Mediamtx) ListRecordings(page, itemsPerPage int) (*RecordingList, error) {
 	url := fmt.Sprintf("%s/v3/recordings/list?page=%d&itemsPerPage=%d", mtx.baseAddress, page, itemsPerPage)
 
 	resp, err := http.Get(url)
@@ -67,7 +67,7 @@ func (mtx *mediamtx) ListRecordings(page, itemsPerPage int) (*RecordingList, err
 	return &recordings, err
 }
 
-func (mtx *mediamtx) GetRecordings(pathName string) (*Recording, error) {
+func (mtx *Mediamtx) GetRecordings(pathName string) (*Recording, error) {
 	if !strings.HasPrefix(pathName, "/") {
 		pathName = "/" + pathName
 	}
@@ -93,7 +93,7 @@ func (mtx *mediamtx) GetRecordings(pathName string) (*Recording, error) {
 	return &recording, err
 }
 
-func (mtx *mediamtx) DeleteRecordingSegment(pathName, startTime string) error {
+func (mtx *Mediamtx) DeleteRecordingSegment(pathName, startTime string) error {
 	url := fmt.Sprintf("%s/v3/recordings/deletesegment?path=%s&start=%s",
 		mtx.baseAddress,
 		url.QueryEscape(pathName),

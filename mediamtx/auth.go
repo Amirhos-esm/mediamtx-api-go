@@ -130,7 +130,7 @@ func (h AuthenticationData) String() string {
 
 type AuthenticationCallback func(*AuthenticationData) (allow bool)
 
-func (mtx *mediamtx) AddAuthenticationCallback(callback AuthenticationCallback) {
+func (mtx *Mediamtx) AddAuthenticationCallback(callback AuthenticationCallback) {
 
 	mtx.authMutex.Lock()
 	defer mtx.authMutex.Unlock()

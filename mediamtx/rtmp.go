@@ -47,7 +47,7 @@ func (ap RTMPConnList) String() string {
 }
 
 // ListRTMPConns returns all RTMP connections with pagination
-func (mtx *mediamtx) ListRTMPConns(page, itemsPerPage int) (*RTMPConnList, error) {
+func (mtx *Mediamtx) ListRTMPConns(page, itemsPerPage int) (*RTMPConnList, error) {
 	url := fmt.Sprintf("%s/v3/rtmpconns/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -73,7 +73,7 @@ func (mtx *mediamtx) ListRTMPConns(page, itemsPerPage int) (*RTMPConnList, error
 }
 
 // GetRTMPConn returns a specific RTMP connection by ID
-func (mtx *mediamtx) GetRTMPConn(id string) (*RTMPConn, error) {
+func (mtx *Mediamtx) GetRTMPConn(id string) (*RTMPConn, error) {
 	url := fmt.Sprintf("%s/v3/rtmpconns/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -98,7 +98,7 @@ func (mtx *mediamtx) GetRTMPConn(id string) (*RTMPConn, error) {
 }
 
 // KickRTMPConn kicks out an RTMP connection from the server
-func (mtx *mediamtx) KickRTMPConn(id string) error {
+func (mtx *Mediamtx) KickRTMPConn(id string) error {
 	url := fmt.Sprintf("%s/v3/rtmpconns/kick/%s", mtx.baseAddress, id)
 
 	req, err := http.NewRequest("POST", url, nil)
@@ -126,7 +126,7 @@ func (mtx *mediamtx) KickRTMPConn(id string) error {
 }
 
 // ListRTMPSConns returns all secure RTMPS connections with pagination
-func (mtx *mediamtx) ListRTMPSConns(page, itemsPerPage int) (*RTMPConnList, error) {
+func (mtx *Mediamtx) ListRTMPSConns(page, itemsPerPage int) (*RTMPConnList, error) {
 	url := fmt.Sprintf("%s/v3/rtmpsconns/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -152,7 +152,7 @@ func (mtx *mediamtx) ListRTMPSConns(page, itemsPerPage int) (*RTMPConnList, erro
 }
 
 // GetRTMPSConn returns a specific RTMPS connection by ID
-func (mtx *mediamtx) GetRTMPSConn(id string) (*RTMPConn, error) {
+func (mtx *Mediamtx) GetRTMPSConn(id string) (*RTMPConn, error) {
 	url := fmt.Sprintf("%s/v3/rtmpsconns/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -177,7 +177,7 @@ func (mtx *mediamtx) GetRTMPSConn(id string) (*RTMPConn, error) {
 }
 
 // KickRTMPSConn kicks out an RTMPS connection from the server
-func (mtx *mediamtx) KickRTMPSConn(id string) error {
+func (mtx *Mediamtx) KickRTMPSConn(id string) error {
 	url := fmt.Sprintf("%s/v3/rtmpsconns/kick/%s", mtx.baseAddress, id)
 
 	req, err := http.NewRequest("POST", url, nil)

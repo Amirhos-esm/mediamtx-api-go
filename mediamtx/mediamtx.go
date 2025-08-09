@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type mediamtx struct {
+type Mediamtx struct {
 	hookQueue   chan hookQueueType
 	hookBaseUrl string
 	baseAddress string
@@ -21,15 +21,15 @@ type mediamtx struct {
 	server      http.Server
 }
 
-func CreateMtxApi(mtx_addr string, hookBaseUrl string) *mediamtx {
-	return &mediamtx{
+func CreateMtxApi(mtx_addr string, hookBaseUrl string) *Mediamtx {
+	return &Mediamtx{
 		hookBaseUrl: hookBaseUrl,
 		baseAddress: mtx_addr,
 		callbacks:   make(map[HookType]HookCallback),
 	}
 }
 
-func (mtx *mediamtx) RunServer(host string) error {
+func (mtx *Mediamtx) RunServer(host string) error {
 	mtx.host = host
 	mtx.hookQueue = make(chan hookQueueType)
 
@@ -101,7 +101,7 @@ func (mtx *mediamtx) RunServer(host string) error {
 	return mtx.server.ListenAndServe()
 }
 
-func (mtx *mediamtx) StopServer() {
+func (mtx *Mediamtx) StopServer() {
 	close(mtx.hookQueue)
 	// Create a context with timeout for graceful shutdown
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -114,7 +114,7 @@ func (mtx *mediamtx) StopServer() {
 	}
 
 }
-func (mtx *mediamtx) RegisterHookCallback(hook HookType, restart bool, vars string, callback HookCallback) error {
+func (mtx *Mediamtx) RegisterHookCallback(hook HookType, restart bool, vars string, callback HookCallback) error {
 	err := hook.Enable(vars, restart, mtx)
 	if err != nil {
 		return err

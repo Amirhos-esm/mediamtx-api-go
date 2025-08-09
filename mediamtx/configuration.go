@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (mtx *mediamtx) GetGlobalConfiguration() (*GlobalConf, error) {
+func (mtx *Mediamtx) GetGlobalConfiguration() (*GlobalConf, error) {
 	url := mtx.baseAddress + "/v3/config/global/get"
 
 	resp, err := http.Get(url)
@@ -31,7 +31,7 @@ func (mtx *mediamtx) GetGlobalConfiguration() (*GlobalConf, error) {
 	err = json.Unmarshal(body, &conf)
 	return &conf, err
 }
-func (mtx *mediamtx) PatchGlobalConfiguration(patches map[string]any) error {
+func (mtx *Mediamtx) PatchGlobalConfiguration(patches map[string]any) error {
 	if patches == nil {
 		return errors.New("patchs is empty")
 	}
@@ -64,7 +64,7 @@ func (mtx *mediamtx) PatchGlobalConfiguration(patches map[string]any) error {
 	return nil
 }
 
-func (mtx *mediamtx) GetDefaultPathConfiguration() (*PathConf, error) {
+func (mtx *Mediamtx) GetDefaultPathConfiguration() (*PathConf, error) {
 	url := mtx.baseAddress + "/v3/config/pathdefaults/get"
 
 	resp, err := http.Get(url)
@@ -86,7 +86,7 @@ func (mtx *mediamtx) GetDefaultPathConfiguration() (*PathConf, error) {
 	return &conf, err
 }
 
-func (mtx *mediamtx) PatchDefaultPathConfiguration(patches map[string]any) error {
+func (mtx *Mediamtx) PatchDefaultPathConfiguration(patches map[string]any) error {
 	if patches == nil {
 		return errors.New("patchs is empty")
 	}
@@ -119,7 +119,7 @@ func (mtx *mediamtx) PatchDefaultPathConfiguration(patches map[string]any) error
 	return nil
 }
 
-func (mtx *mediamtx) GetAlltPathConfiguration() (*AllPathConfiguration, error) {
+func (mtx *Mediamtx) GetAlltPathConfiguration() (*AllPathConfiguration, error) {
 	url := mtx.baseAddress + "/v3/config/paths/list"
 
 	resp, err := http.Get(url)
@@ -141,7 +141,7 @@ func (mtx *mediamtx) GetAlltPathConfiguration() (*AllPathConfiguration, error) {
 	return &conf, err
 }
 
-func (mtx *mediamtx) GetPathConfiguration(path string) (*PathConf, error) {
+func (mtx *Mediamtx) GetPathConfiguration(path string) (*PathConf, error) {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
@@ -166,7 +166,7 @@ func (mtx *mediamtx) GetPathConfiguration(path string) (*PathConf, error) {
 	return &conf, err
 }
 
-func (mtx *mediamtx) AddPathConfiguration(path string, conf map[string]any) error {
+func (mtx *Mediamtx) AddPathConfiguration(path string, conf map[string]any) error {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
@@ -199,7 +199,7 @@ func (mtx *mediamtx) AddPathConfiguration(path string, conf map[string]any) erro
 	return nil
 }
 
-func (mtx *mediamtx) PatchPathConfiguration(path string, patches map[string]any) error {
+func (mtx *Mediamtx) PatchPathConfiguration(path string, patches map[string]any) error {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
@@ -233,7 +233,7 @@ func (mtx *mediamtx) PatchPathConfiguration(path string, patches map[string]any)
 	return nil
 }
 
-func (mtx *mediamtx) ReplacePathConfiguration(path string, conf *PathConf) error {
+func (mtx *Mediamtx) ReplacePathConfiguration(path string, conf *PathConf) error {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
@@ -267,7 +267,7 @@ func (mtx *mediamtx) ReplacePathConfiguration(path string, conf *PathConf) error
 	return nil
 }
 
-func (mtx *mediamtx) DeletePathConfiguration(path string) error {
+func (mtx *Mediamtx) DeletePathConfiguration(path string) error {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}

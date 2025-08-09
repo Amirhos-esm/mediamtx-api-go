@@ -91,7 +91,7 @@ func (p RTSPSessionList) String() string {
 }
 
 // ListRTSPConns returns all RTSP connections with pagination
-func (mtx *mediamtx) ListRTSPConns(page, itemsPerPage int) (*RTSPConnList, error) {
+func (mtx *Mediamtx) ListRTSPConns(page, itemsPerPage int) (*RTSPConnList, error) {
 	url := fmt.Sprintf("%s/v3/rtspconns/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -117,7 +117,7 @@ func (mtx *mediamtx) ListRTSPConns(page, itemsPerPage int) (*RTSPConnList, error
 }
 
 // GetRTSPConn returns a specific RTSP connection by ID
-func (mtx *mediamtx) GetRTSPConn(id string) (*RTSPConn, error) {
+func (mtx *Mediamtx) GetRTSPConn(id string) (*RTSPConn, error) {
 	url := fmt.Sprintf("%s/v3/rtspconns/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -142,7 +142,7 @@ func (mtx *mediamtx) GetRTSPConn(id string) (*RTSPConn, error) {
 }
 
 // ListRTSPSessions returns all RTSP sessions with pagination
-func (mtx *mediamtx) ListRTSPSessions(page, itemsPerPage int) (*RTSPSessionList, error) {
+func (mtx *Mediamtx) ListRTSPSessions(page, itemsPerPage int) (*RTSPSessionList, error) {
 	url := fmt.Sprintf("%s/v3/rtspsessions/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -168,7 +168,7 @@ func (mtx *mediamtx) ListRTSPSessions(page, itemsPerPage int) (*RTSPSessionList,
 }
 
 // GetRTSPSession returns a specific RTSP session by ID
-func (mtx *mediamtx) GetRTSPSession(id string) (*RTSPSession, error) {
+func (mtx *Mediamtx) GetRTSPSession(id string) (*RTSPSession, error) {
 	url := fmt.Sprintf("%s/v3/rtspsessions/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -193,7 +193,7 @@ func (mtx *mediamtx) GetRTSPSession(id string) (*RTSPSession, error) {
 }
 
 // KickRTSPSession kicks out an RTSP session from the server
-func (mtx *mediamtx) KickRTSPSession(id string) error {
+func (mtx *Mediamtx) KickRTSPSession(id string) error {
 	url := fmt.Sprintf("%s/v3/rtspsessions/kick/%s", mtx.baseAddress, id)
 
 	req, err := http.NewRequest("POST", url, nil)
@@ -221,7 +221,7 @@ func (mtx *mediamtx) KickRTSPSession(id string) error {
 }
 
 // ListRTSPConnsSecure returns all secure RTSPS connections with pagination
-func (mtx *mediamtx) ListRTSPConnsSecure(page, itemsPerPage int) (*RTSPConnList, error) {
+func (mtx *Mediamtx) ListRTSPConnsSecure(page, itemsPerPage int) (*RTSPConnList, error) {
 	url := fmt.Sprintf("%s/v3/rtspsconns/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -247,7 +247,7 @@ func (mtx *mediamtx) ListRTSPConnsSecure(page, itemsPerPage int) (*RTSPConnList,
 }
 
 // ListRTSPSessionsSecure returns all secure RTSPS sessions with pagination
-func (mtx *mediamtx) ListRTSPSessionsSecure(page, itemsPerPage int) (*RTSPSessionList, error) {
+func (mtx *Mediamtx) ListRTSPSessionsSecure(page, itemsPerPage int) (*RTSPSessionList, error) {
 	url := fmt.Sprintf("%s/v3/rtspssessions/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -273,7 +273,7 @@ func (mtx *mediamtx) ListRTSPSessionsSecure(page, itemsPerPage int) (*RTSPSessio
 }
 
 // GetRTSPConn returns a specific RTSPS connection by ID
-func (mtx *mediamtx) GetRTSPConnSecure(id string) (*RTSPConn, error) {
+func (mtx *Mediamtx) GetRTSPConnSecure(id string) (*RTSPConn, error) {
 	url := fmt.Sprintf("%s/v3/rtspsconns/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -298,7 +298,7 @@ func (mtx *mediamtx) GetRTSPConnSecure(id string) (*RTSPConn, error) {
 }
 
 // GetRTSPSession returns a specific RTSPS session by ID
-func (mtx *mediamtx) GetRTSPSessionSecure(id string) (*RTSPSession, error) {
+func (mtx *Mediamtx) GetRTSPSessionSecure(id string) (*RTSPSession, error) {
 	url := fmt.Sprintf("%s/v3/rtspssessions/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -323,7 +323,7 @@ func (mtx *mediamtx) GetRTSPSessionSecure(id string) (*RTSPSession, error) {
 }
 
 // KickRTSPSession kicks out an RTSPS session from the server
-func (mtx *mediamtx) KickRTSPSessionSecure(id string) error {
+func (mtx *Mediamtx) KickRTSPSessionSecure(id string) error {
 	url := fmt.Sprintf("%s/v3/rtspssessions/kick/%s", mtx.baseAddress, id)
 
 	req, err := http.NewRequest("POST", url, nil)

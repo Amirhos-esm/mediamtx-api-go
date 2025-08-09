@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	
 	api := mtx.CreateMtxApi("http://localhost:9997", "http://localhost:10000")
 
 	paths, err := api.GetAllPath(0, 100)

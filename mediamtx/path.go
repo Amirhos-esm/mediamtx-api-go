@@ -47,7 +47,7 @@ func (p Path) String() string {
 	return string(yamlData)
 }
 
-func (mtx *mediamtx) GetAllPath(page, itemsPerPage int) (*AllPath, error) {
+func (mtx *Mediamtx) GetAllPath(page, itemsPerPage int) (*AllPath, error) {
 	url := fmt.Sprintf("%s/v3/paths/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 	resp, err := http.Get(url)
@@ -69,7 +69,7 @@ func (mtx *mediamtx) GetAllPath(page, itemsPerPage int) (*AllPath, error) {
 	return &conf, err
 }
 
-func (mtx *mediamtx) GetPath(path string) (*Path, error) {
+func (mtx *Mediamtx) GetPath(path string) (*Path, error) {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}

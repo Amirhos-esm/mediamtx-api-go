@@ -45,7 +45,7 @@ func (ht HookType) String() string {
 	return "unknown"
 }
 
-func (ht HookType) Enable(vars string, restart bool, mtx *mediamtx) error {
+func (ht HookType) Enable(vars string, restart bool, mtx *Mediamtx) error {
 
 	queries := ""
 	if len(vars) > 0 {

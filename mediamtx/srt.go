@@ -103,7 +103,7 @@ func (p SRTConn) String() string {
 }
 
 // ListSRTConns returns all SRT connections with pagination
-func (mtx *mediamtx) ListSRTConns(page, itemsPerPage int) (*SRTConnList, error) {
+func (mtx *Mediamtx) ListSRTConns(page, itemsPerPage int) (*SRTConnList, error) {
 	url := fmt.Sprintf("%s/v3/srtconns/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -129,7 +129,7 @@ func (mtx *mediamtx) ListSRTConns(page, itemsPerPage int) (*SRTConnList, error) 
 }
 
 // GetSRTConn returns a specific SRT connection by ID
-func (mtx *mediamtx) GetSRTConn(id string) (*SRTConn, error) {
+func (mtx *Mediamtx) GetSRTConn(id string) (*SRTConn, error) {
 	url := fmt.Sprintf("%s/v3/srtconns/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -154,7 +154,7 @@ func (mtx *mediamtx) GetSRTConn(id string) (*SRTConn, error) {
 }
 
 // KickSRTConn kicks out an SRT connection from the server
-func (mtx *mediamtx) KickSRTConn(id string) error {
+func (mtx *Mediamtx) KickSRTConn(id string) error {
 	url := fmt.Sprintf("%s/v3/srtconns/kick/%s", mtx.baseAddress, id)
 
 	req, err := http.NewRequest("POST", url, nil)

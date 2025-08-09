@@ -24,7 +24,7 @@ type HLSMuxerList struct {
 }
 
 // ListHLSMuxers returns all HLS muxers with pagination
-func (mtx *mediamtx) ListHLSMuxers(page, itemsPerPage int) (*HLSMuxerList, error) {
+func (mtx *Mediamtx) ListHLSMuxers(page, itemsPerPage int) (*HLSMuxerList, error) {
 	url := fmt.Sprintf("%s/v3/hlsmuxers/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -50,7 +50,7 @@ func (mtx *mediamtx) ListHLSMuxers(page, itemsPerPage int) (*HLSMuxerList, error
 }
 
 // GetHLSMuxer returns a specific HLS muxer by path name
-func (mtx *mediamtx) GetHLSMuxer(name string) (*HLSMuxer, error) {
+func (mtx *Mediamtx) GetHLSMuxer(name string) (*HLSMuxer, error) {
 	if !strings.HasPrefix(name, "/") {
 		name = "/" + name
 	}

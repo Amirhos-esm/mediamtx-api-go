@@ -50,7 +50,7 @@ func (p WebRTCSessionList) String() string {
 }
 
 // ListWebRTCSessions returns all WebRTC sessions with pagination
-func (mtx *mediamtx) ListWebRTCSessions(page, itemsPerPage int) (*WebRTCSessionList, error) {
+func (mtx *Mediamtx) ListWebRTCSessions(page, itemsPerPage int) (*WebRTCSessionList, error) {
 	url := fmt.Sprintf("%s/v3/webrtcsessions/list?page=%d&itemsPerPage=%d",
 		mtx.baseAddress, page, itemsPerPage)
 
@@ -76,7 +76,7 @@ func (mtx *mediamtx) ListWebRTCSessions(page, itemsPerPage int) (*WebRTCSessionL
 }
 
 // GetWebRTCSession returns a specific WebRTC session by ID
-func (mtx *mediamtx) GetWebRTCSession(id string) (*WebRTCSession, error) {
+func (mtx *Mediamtx) GetWebRTCSession(id string) (*WebRTCSession, error) {
 	url := fmt.Sprintf("%s/v3/webrtcsessions/get/%s", mtx.baseAddress, id)
 
 	resp, err := http.Get(url)
@@ -101,7 +101,7 @@ func (mtx *mediamtx) GetWebRTCSession(id string) (*WebRTCSession, error) {
 }
 
 // KickWebRTCSession kicks out a WebRTC session from the server
-func (mtx *mediamtx) KickWebRTCSession(id string) error {
+func (mtx *Mediamtx) KickWebRTCSession(id string) error {
 	url := fmt.Sprintf("%s/v3/webrtcsessions/kick/%s", mtx.baseAddress, id)
 
 	req, err := http.NewRequest("POST", url, nil)
