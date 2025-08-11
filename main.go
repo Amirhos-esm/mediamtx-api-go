@@ -86,7 +86,7 @@ func main() {
 		return true
 	})
 
-	err = api.RunServer("localhost:10000")
+	err = api.RunServer("localhost:10000",nil)
 	if err != nil {
 		panic(err)
 	}

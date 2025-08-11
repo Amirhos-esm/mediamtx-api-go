@@ -29,7 +29,7 @@ func CreateMtxApi(mtx_addr string, hookBaseUrl string) *Mediamtx {
 	}
 }
 
-func (mtx *Mediamtx) RunServer(host string) error {
+func (mtx *Mediamtx) RunServer(host string,muxer func(*http.ServeMux)) error {
 	mtx.host = host
 	mtx.hookQueue = make(chan hookQueueType)
 
@@ -77,6 +77,10 @@ func (mtx *Mediamtx) RunServer(host string) error {
 			}
 		}
 	})
+
+	if muxer != nil{
+		muxer(mux)
+	}
 
 	go func() {
 		for {
