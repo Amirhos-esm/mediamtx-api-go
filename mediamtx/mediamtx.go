@@ -11,6 +11,9 @@ type Mediamtx struct {
 	// server http.Server
 }
 
+func (m Mediamtx) GetBaseAddress()string{
+	return m.baseAddress
+}
 func CreateMtxApi(mtx_addr string) *Mediamtx {
 	return &Mediamtx{
 		baseAddress: mtx_addr,
