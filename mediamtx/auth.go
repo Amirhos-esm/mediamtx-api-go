@@ -128,12 +128,12 @@ func (h AuthenticationData) String() string {
 		h.User, h.Password, h.IP, h.Action.String(), h.Path, h.Protocol.String(), h.ID, h.Query)
 }
 
-type AuthenticationCallback func(*AuthenticationData) (allow bool)
+// type AuthenticationCallback func(*AuthenticationData) (allow bool)
 
-func (mtx *Mediamtx) AddAuthenticationCallback(callback AuthenticationCallback) {
+// func (mtx *Mediamtx) AddAuthenticationCallback(callback AuthenticationCallback) {
 
-	mtx.authMutex.Lock()
-	defer mtx.authMutex.Unlock()
-	mtx.authCb = callback
+// 	mtx.authMutex.Lock()
+// 	defer mtx.authMutex.Unlock()
+// 	mtx.authCb = callback
 
-}
+// }

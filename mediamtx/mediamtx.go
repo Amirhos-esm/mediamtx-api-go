@@ -1,131 +1,117 @@
 package mediamtx
 
-import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"sync"
-	"time"
-)
-
 type Mediamtx struct {
-	hookQueue   chan hookQueueType
-	hookBaseUrl string
+	// hookQueue   chan hookQueueType
 	baseAddress string
-	mutex       sync.Mutex
-	authMutex   sync.Mutex
-	authCb      AuthenticationCallback
-	host        string
-	callbacks   map[HookType]HookCallback
-	server      http.Server
+	// mutex       sync.Mutex
+	// authMutex   sync.Mutex
+	// authCb      AuthenticationCallback
+	// host        string
+	// callbacks   map[HookType]HookCallback
+	// server http.Server
 }
 
-func CreateMtxApi(mtx_addr string, hookBaseUrl string) *Mediamtx {
+func CreateMtxApi(mtx_addr string) *Mediamtx {
 	return &Mediamtx{
-		hookBaseUrl: hookBaseUrl,
 		baseAddress: mtx_addr,
-		callbacks:   make(map[HookType]HookCallback),
+		// callbacks:   make(map[HookType]HookCallback),
 	}
 }
 
-func (mtx *Mediamtx) RunServer(host string,muxer func(*http.ServeMux)) error {
-	mtx.host = host
-	mtx.hookQueue = make(chan hookQueueType)
+// func (mtx *Mediamtx) Routes(router *gin.Engine) {
+// 	// Register hook handlers
+// 	for hook := range hookTypeToString {
+// 		hookCopy := hook // capture loop variable
+// 		router.GET("/"+hook.String(), func(c *gin.Context) {
+// 			datas := make(map[string]any)
+// 			for key, values := range c.Request.URL.Query() {
+// 				if len(values) > 0 {
+// 					datas[key] = values[0]
+// 				}
+// 			}
+// 			select {
+// 			case mtx.hookQueue <- hookQueueType{
+// 				datas: datas,
+// 				t:     hookCopy,
+// 			}:
+// 			default:
+// 				// Drop request if channel full
+// 				c.Status(204) // No Content
+// 				return
+// 			}
+// 			c.Status(200)
+// 		})
+// 	}
 
-	mux := http.NewServeMux()
+// 	// Auth endpoint
+// 	router.POST("/auth", func(c *gin.Context) {
+// 		var authData AuthenticationData
+// 		if err := c.ShouldBindJSON(&authData); err != nil {
+// 			c.JSON(400, gin.H{"error": "Invalid request body"})
+// 			return
+// 		}
 
-	for hook := range hookTypeToString {
-		mux.HandleFunc("/"+hook.String(), func(w http.ResponseWriter, r *http.Request) {
-			datas := make(map[string]any)
-			for key, values := range r.URL.Query() {
-				if len(values) > 0 {
-					datas[key] = values[0]
-				}
-			}
-			select {
-			case mtx.hookQueue <- hookQueueType{
-				datas: datas,
-				t:     hook,
-			}:
-			default:
-				// If the channel is full, we drop the request to avoid blocking
-				// the server. This is a simple way to handle backpressure.
-				return
-			}
-		})
-	}
-	mux.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
+// 		mtx.authMutex.Lock()
+// 		cb := mtx.authCb
+// 		mtx.authMutex.Unlock()
 
-		var authData AuthenticationData
-		if err := json.NewDecoder(r.Body).Decode(&authData); err != nil {
-			http.Error(w, "Invalid request body", http.StatusBadRequest)
-			return
-		}
-		defer r.Body.Close()
+// 		if cb != nil {
+// 			if cb(&authData) {
+// 				c.String(200, "Authorized")
+// 			} else {
+// 				c.String(401, "Unauthorized")
+// 			}
+// 		}
+// 	})
 
-		mtx.authMutex.Lock()
-		cb := mtx.authCb
-		mtx.authMutex.Unlock()
+// 	// Background goroutine to process hook queue
+// 	go func() {
+// 		for data := range mtx.hookQueue {
+// 			mtx.mutex.Lock()
+// 			cb := mtx.callbacks[data.t]
+// 			mtx.mutex.Unlock()
 
-		if cb != nil {
-			if cb(&authData) {
-				w.WriteHeader(http.StatusOK)
-				w.Write([]byte("Authorized"))
-			} else {
-				http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			}
-		}
-	})
+// 			if cb != nil {
+// 				cb(data.t, data.datas)
+// 			}
+// 		}
+// 	}()
 
-	if muxer != nil{
-		muxer(mux)
-	}
+// }
 
-	go func() {
-		for {
-			data, ok := <-mtx.hookQueue
-			if !ok {
-				return
-			}
-			{
-				mtx.mutex.Lock()
-				cb := mtx.callbacks[data.t]
-				mtx.mutex.Unlock()
+// func (mtx *Mediamtx) RunServer(host string) error {
+// 	mtx.host = host
+// 	mtx.hookQueue = make(chan hookQueueType)
 
-				if cb != nil {
-					cb(data.t, data.datas)
+// 	// Create Gin router
+// 	router := gin.Default()
+// 	mtx.Routes(router)
+// 	mtx.server.Addr = host
+// 	mtx.server.Handler = router
+// 	return mtx.server.ListenAndServe()
+// }
 
-				}
-			}
-		}
-	}()
-	mtx.server.Addr = host
-	mtx.server.Handler = mux
-	return mtx.server.ListenAndServe()
-}
+// func (mtx *Mediamtx) StopServer() {
+// 	close(mtx.hookQueue)
 
-func (mtx *Mediamtx) StopServer() {
-	close(mtx.hookQueue)
-	// Create a context with timeout for graceful shutdown
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+// 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+// 	defer cancel()
 
-	if err := mtx.server.Shutdown(ctx); err != nil {
-		fmt.Println("Shutdown error:", err)
-	} else {
-		fmt.Println("Server stopped gracefully")
-	}
+// 	if err := mtx.server.Shutdown(ctx); err != nil {
+// 		fmt.Println("Shutdown error:", err)
+// 	} else {
+// 		fmt.Println("Server stopped gracefully")
+// 	}
+// }
 
-}
-func (mtx *Mediamtx) RegisterHookCallback(hook HookType, restart bool, vars string, callback HookCallback) error {
-	err := hook.Enable(vars, restart, mtx)
-	if err != nil {
-		return err
-	}
+// func (mtx *Mediamtx) RegisterHookCallback(hook HookType, restart bool, vars string, callback HookCallback) error {
+// 	err := hook.Enable(vars, restart, mtx)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	mtx.mutex.Lock()
-	defer mtx.mutex.Unlock()
-	mtx.callbacks[hook] = callback
-	return nil
-}
+// 	mtx.mutex.Lock()
+// 	defer mtx.mutex.Unlock()
+// 	mtx.callbacks[hook] = callback
+// 	return nil
+// }
